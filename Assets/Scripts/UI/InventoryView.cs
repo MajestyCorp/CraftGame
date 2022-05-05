@@ -9,8 +9,6 @@ namespace Crafter
     {
         public static InventoryView Instance { get; private set; }
 
-        public Transform ItemsHolder { get { return slotsHolder; } }
-
         [SerializeField]
         private Canvas canvas;
         [SerializeField]
@@ -60,8 +58,15 @@ namespace Crafter
 
         private void OnInventoryReset()
         {
+            Inventory.Item item;
+
             for (int i = 0; i < _slots.Count; i++)
-                _slots[i].SetItem(_inventory.GetItem(i));
+            {
+                if (_inventory.TryGetItem(i, out item))
+                    _slots[i].SetItem(item);
+                else
+                    _slots[i].SetItem(null);
+            }
         }
 
         public void ButtonReset()

@@ -79,7 +79,8 @@ namespace Crafter
 
             //find correct craft schema
             for (int i = 0; i < _schemasLibrary.Count && craftedItem == null; i++)
-                craftedItem = _schemasLibrary[i].CraftItem(itemsOnTable);
+                if(_schemasLibrary[i].CanCraft(itemsOnTable))
+                    craftedItem = _schemasLibrary[i].CraftItem();
 
             if(craftedItem != null)
             {

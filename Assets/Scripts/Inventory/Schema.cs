@@ -12,17 +12,19 @@ namespace Crafter
         [SerializeField]
         private ItemModel craftedItem; 
 
-        public Inventory.Item CraftItem(List<Inventory.Item> itemsOnTable)
+        public bool CanCraft(List<Inventory.Item> itemsOnTable)
         {
             List<ItemModel> existModels = new List<ItemModel>(inputItems);
 
             for (int i = 0; i < itemsOnTable.Count; i++)
                 existModels.Remove(itemsOnTable[i].Model);
 
-            if (existModels.Count > 0)
-                return null;
-            else
-                return new Inventory.Item(craftedItem);
+            return existModels.Count == 0;
+        }
+
+        public Inventory.Item CraftItem()
+        {
+            return new Inventory.Item(craftedItem);
         }
     }
 }

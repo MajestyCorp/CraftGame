@@ -10,11 +10,14 @@ namespace Crafter
     {
         private const string c_load_path = "Items";
         public static Inventory Instance { get; private set; }
-        public int ItemsAmount { get => _items.Count; }
+        public int ItemsAmount => _items.Count;
 
-        public Action OnReset;
-        public Action<Item> OnItemAdded;
-        public Action<Item> OnItemRemoved;
+        public delegate void SimpleHandler();
+        public delegate void ItemHandler(Item item);
+
+        public event SimpleHandler OnReset;
+        public event ItemHandler OnItemAdded;
+        public event ItemHandler OnItemRemoved;
 
         [SerializeField]
         private List<Item> initialItems;
@@ -99,12 +102,18 @@ namespace Crafter
             return isRemoved;
         }
 
-        public Item GetItem(int index)
+        public bool TryGetItem(int index, out Item item)
         {
             if (index < _items.Count)
-                return _items[index];
+            {
+                item = _items[index];
+                return true;
+            }
             else
-                return null;
+            {
+                item = null;
+                return false;
+            }
         }
     }
 }

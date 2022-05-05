@@ -7,8 +7,8 @@ namespace Crafter
     [CreateAssetMenu(fileName = "new item", menuName = "Inventory/Item")]
     public class ItemModel : ScriptableObject
     {
-        public Sprite ItemSprite { get { return itemSprite; } }
-        public bool IsConsumable { get { return consumable; } }
+        public Sprite ItemSprite => itemSprite;
+        public bool IsConsumable => consumable; 
 
         [SerializeField]
         private Sprite itemSprite;

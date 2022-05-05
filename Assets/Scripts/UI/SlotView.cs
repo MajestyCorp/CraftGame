@@ -6,9 +6,10 @@ using UnityEngine.EventSystems;
 
 namespace Crafter
 {
-    public class SlotView : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+    public class SlotView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
     {
-        public Inventory.Item StoredItem { get => _storedItem; }
+        public Inventory.Item StoredItem => _storedItem;
+        public bool AllowDropIn => allowDropIn;
 
         [SerializeField]
         private Image slotImage;
@@ -34,11 +35,6 @@ namespace Crafter
             gameObject.SetActive(true);
         }
         #region drag interfaces
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            
-        }
-
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (_storedItem == null)
@@ -68,6 +64,10 @@ namespace Crafter
             SlotView draggedSlot;
             if (eventData.pointerDrag == null || !eventData.pointerDrag.TryGetComponent<SlotView>(out draggedSlot) ||
                 !allowDropIn)
+                return;
+
+            //if dragged slot is locked and player tries to swap items - forbid the action
+            if (StoredItem != null && !draggedSlot.AllowDropIn)
                 return;
 
             swapItem = StoredItem;
